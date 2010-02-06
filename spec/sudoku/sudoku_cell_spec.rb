@@ -1,9 +1,9 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe "cells" do
+describe "sudoku_cell" do
   
   before(:each) do
-    @cell = Cell.new(1,2)
+    @cell = SudokuCell.new(1,2)
   end
   it "should have a row and a column" do
     @cell.row.should == 1

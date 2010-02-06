@@ -12,7 +12,7 @@ class SudokuBoard
   def generate_board_cells
     Arry.each do |row|
       Arry.each do |col|
-        @cells << Cell.new(row, col)
+        @cells << SudokuCell.new(row, col)
       end
     end
   end

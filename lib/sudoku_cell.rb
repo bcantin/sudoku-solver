@@ -1,4 +1,4 @@
-class Cell
+class SudokuCell
   
   attr_reader :row, :column
   attr_accessor :value, :guesses
