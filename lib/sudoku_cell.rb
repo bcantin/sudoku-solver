@@ -18,4 +18,7 @@ class SudokuCell
     !value.nil?
   end
   
+  def empty?
+    value.nil?
+  end
 end
