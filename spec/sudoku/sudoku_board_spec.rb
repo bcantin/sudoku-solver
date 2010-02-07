@@ -8,6 +8,12 @@ describe "sudoku_board" do
     end
   end
   
+  def fill_in_only_8_columns_in_a_row(row)
+    (1..8).each do |num|
+      @board.set_cell_value(row,num,num)
+    end
+  end
+  
   def fill_in_entire_column(col)
     (1..9).each do |num|
       @board.set_cell_value(num,col,num)
@@ -58,6 +64,11 @@ describe "sudoku_board" do
       fill_in_entire_row(2)
       @board.row_complete?(2).should == true
     end
+    
+    it "should return false if all 9 cells in the row do not have a value" do
+      fill_in_only_8_columns_in_a_row(8)
+      @board.row_complete?(8).should == false
+    end
   end
   
   describe "column interaction" do
@@ -81,6 +92,27 @@ describe "sudoku_board" do
     it "should return true if all 9 cells have a value" do
       fill_in_entire_box(9)
       @board.box_complete?(9).should == true
+    end
+    
+    it "should be able to find the box number given a cell" do
+      cell = @board.get_cell(1,1)
+      @board.get_box_number_from_cell(cell).should == 1
+      cell = @board.get_cell(4,2)
+      @board.get_box_number_from_cell(cell).should == 2
+      cell = @board.get_cell(9,3)
+      @board.get_box_number_from_cell(cell).should == 3
+      cell = @board.get_cell(1,6)
+      @board.get_box_number_from_cell(cell).should == 4
+      cell = @board.get_cell(5,4)
+      @board.get_box_number_from_cell(cell).should == 5
+      cell = @board.get_cell(7,5)
+      @board.get_box_number_from_cell(cell).should == 6
+      cell = @board.get_cell(3,9)
+      @board.get_box_number_from_cell(cell).should == 7
+      cell = @board.get_cell(5,8)
+      @board.get_box_number_from_cell(cell).should == 8
+      cell = @board.get_cell(9,9)
+      @board.get_box_number_from_cell(cell).should == 9
     end
   end
   

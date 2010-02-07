@@ -16,7 +16,12 @@ describe "sudoku_cell" do
   end
   
   it "should return true if the cell has a value" do
-    @cell.value = 4
-    @cell.present?.should == true
+    new_cell = SudokuCell.new(2,2,8)
+    new_cell.present?.should == true
+  end
+  
+  it "should return false if the cell does not have a value" do
+    new_cell = SudokuCell.new(2,2)
+    new_cell.present?.should == false
   end
 end

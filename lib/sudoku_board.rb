@@ -10,6 +10,14 @@ class SudokuBoard
     generate_board_cells
   end
   
+  def import_from_array(imported_array)
+    i = 0
+    @cells.each do |c|
+      set_cell(c, imported_array[i]) if imported_array[i]
+      i+=1
+    end
+  end
+  
   def generate_board_cells
     Arry.each do |row|
       Arry.each do |col|
@@ -75,7 +83,32 @@ class SudokuBoard
       end
     end
     box_cells
-    # get_center_of_box(box)
+  end
+  
+  def get_box_number_from_cell(cell)
+    a = [1,2,3]
+    b = [4,5,6]
+    c = [7,8,9]
+    case
+    when a.include?(cell.row) && a.include?(cell.column)
+      1
+    when b.include?(cell.row) && a.include?(cell.column)
+      2
+    when c.include?(cell.row) && a.include?(cell.column)
+      3
+    when a.include?(cell.row) && b.include?(cell.column)
+      4
+    when b.include?(cell.row) && b.include?(cell.column)
+      5
+    when c.include?(cell.row) && b.include?(cell.column)
+      6
+    when a.include?(cell.row) && c.include?(cell.column)
+      7
+    when b.include?(cell.row) && c.include?(cell.column)
+      8
+    when c.include?(cell.row) && c.include?(cell.column)
+      9
+    end
   end
   
   def row_complete?(row)
@@ -95,6 +128,7 @@ class SudokuBoard
        arry = []
        cells.each {|c| arry << c.value if c.present?}
        return true if arry.size == 9 && !arry.uniq!
+       false
      end
     
      def get_center_of_box(box_number)
