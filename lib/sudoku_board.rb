@@ -1,5 +1,6 @@
 class SudokuBoard
   CellNotEmptyError = Class.new(RuntimeError)
+  InvaidImportedArrayError = Class.new(RuntimeError)
   
   attr_accessor :cells
   
@@ -11,6 +12,7 @@ class SudokuBoard
   end
   
   def import_from_array(imported_array)
+    raise InvaidImportedArrayError unless imported_array.size == 81
     i = 0
     @cells.each do |c|
       set_cell(c, imported_array[i]) if imported_array[i]
@@ -39,26 +41,18 @@ class SudokuBoard
   
   def get_cell(row,column)
     @cells.each do |c|
-    if c.row == row && c.column == column
-       return c
-     end
+      if c.row == row && c.column == column
+         return c
+       end
     end
   end
   
   def get_cells_in_row(row)
-    row_cells=[]
-    @cells.each do |c|
-      row_cells << c if c.row == row
-    end
-    row_cells
+    row_cells = @cells.select {|c| c.row == row}
   end
   
   def get_cells_in_column(col)
-    column_cells=[]
-    @cells.each do |c|
-      column_cells << c if c.column == col
-    end
-    column_cells
+    column_cells = @cells.select {|c| c.column == col}
   end
   
   # for a box, we want the ninecells that match
@@ -125,8 +119,9 @@ class SudokuBoard
   
   private
      def nine_valid_cells?(cells)
-       arry = []
-       cells.each {|c| arry << c.value if c.present?}
+       # arry = []
+       # cells.each {|c| arry << c.value if c.present?}
+       arry = cells.select {|c| c.value if c.present?}
        return true if arry.size == 9 && !arry.uniq!
        false
      end

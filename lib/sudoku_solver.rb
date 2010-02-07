@@ -19,14 +19,36 @@ class SudokuSolver
   end
   
   def populate_guesses_for_cell(cell)
-    
+    guesses_from_row = get_missing_values_from_row(cell.row)
+    guesses_from_col = get_missing_values_from_column(cell.column)
+    guesses_from_box = get_missing_values_from_box(@board.get_box_number_from_cell(cell))
+    guesses_from_row & guesses_from_col & guesses_from_box
   end
   
   private
   
     def get_empty_cells(cells)
-      empty_cells = []
-      cells.each {|c| empty_cells << c if c.empty?}
-      empty_cells
+      empty_cells = cells.select {|c| c if c.empty?}
     end
+    
+    def get_missing_values(cells)
+      populated_values = cells.select {|c| c.value if c.present?}
+      Arry - populated_values.collect(&:value)
+    end
+    
+    def get_missing_values_from_row(row)
+      cells = @board.get_cells_in_row(row)
+      get_missing_values(cells)
+    end
+    
+    def get_missing_values_from_column(column)
+      cells = @board.get_cells_in_column(column)
+      get_missing_values(cells)
+    end
+    
+    def get_missing_values_from_box(box)
+      cells = @board.get_cells_in_box(box)
+      get_missing_values(cells)
+    end
+    
 end
