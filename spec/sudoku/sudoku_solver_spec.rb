@@ -75,4 +75,37 @@ describe "sudoku_solver" do
     @solver.populate_guesses_for_cell(cell).should =~ [3,9]
   end
   
+  it "should get all of the empty cells" do
+    create_partially_full_board
+    @solver.get_all_empty_cells.count.should == 51
+  end
+  
+  describe "easy board" do
+    def create_easy_board
+      @board.import_from_array([
+        0,2,0,5,9,4,7,3,1,
+        1,3,9,7,2,0,4,0,0,
+        5,7,4,1,0,8,9,2,6,
+        9,1,0,3,0,0,5,4,2,
+        7,8,2,0,1,0,6,9,3,
+        3,4,5,0,0,9,0,1,7,
+        8,5,3,6,0,1,2,7,9,
+        0,0,7,0,5,3,1,6,4,
+        4,6,1,9,7,2,0,5,0
+      ])
+    end
+    
+    before(:each) do
+      create_easy_board
+    end
+    it "should find 20 empty cells" do
+      @solver.get_all_empty_cells.count.should == 20
+    end
+    
+    it "should be able to solve the board" do
+      @solver.solve!
+    end
+  end
+
+  
 end

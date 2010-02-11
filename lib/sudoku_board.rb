@@ -15,8 +15,8 @@ class SudokuBoard
     raise InvaidImportedArrayError unless imported_array.size == 81
     i = 0
     @cells.each do |c|
-      set_cell(c, imported_array[i]) if imported_array[i]
-      i+=1
+      set_cell(c, imported_array[i]) if Arry.include?(imported_array[i])
+      i += 1
     end
   end
   
@@ -30,7 +30,7 @@ class SudokuBoard
     
   def set_cell_value(row,column,value)
     cell = get_cell(row,column)
-    raise CellNotEmptyError if cell.value != nil
+    raise CellNotEmptyError if cell.present?
     cell.value = value
     cell
   end
@@ -119,8 +119,6 @@ class SudokuBoard
   
   private
      def nine_valid_cells?(cells)
-       # arry = []
-       # cells.each {|c| arry << c.value if c.present?}
        arry = cells.select {|c| c.value if c.present?}
        return true if arry.size == 9 && !arry.uniq!
        false

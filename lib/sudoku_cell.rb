@@ -6,7 +6,7 @@ class SudokuCell
   def initialize(row, column, val=nil)
     @value = val if val
     @row, @column = row, column
-    # @guesses = []
+    @guesses = []
   end
   
   def to_s
