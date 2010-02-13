@@ -24,3 +24,57 @@ For now, the intended use is:
     
 Note:  you can use either 0 or nil to represent a cell that the
 value is not known
+
+    $ irb -r sudoku.rb 
+   
+    >> board = SudokuBoard.new
+    => #<SudokuBoard:0x10149e240 @cells=[#<SudokuCell:0x10149e100 @guesses=[],
+       @column=1, @row=1>, #<SudokuCell:0x10149e0d8 @guesses=[], @column=2, @row=1>, 
+       #<SudokuCell:0x10149e060 @guesses=[], @column=3, @row=1>, ...]
+    
+    >> board.import_from_array([
+    ?>   0,2,0,5,9,4,7,3,1,
+    ?>   1,3,9,7,2,0,4,0,0,
+    ?>   5,7,4,1,0,8,9,2,6,
+    ?>   9,1,0,3,0,0,5,4,2,
+    ?>   7,8,2,0,1,0,6,9,3,
+    ?>   3,4,5,0,0,9,0,1,7,
+    ?>   8,5,3,6,0,1,2,7,9,
+    ?>   0,0,7,0,5,3,1,6,4,
+    ?>   4,6,1,9,7,2,0,5,0
+    >> ])
+    => [#<SudokuCell:0x10149e100 @guesses=[], @column=1, @row=1>, 
+        #<SudokuCell:0x10149e0d8 @guesses=[], @value=2, @column=2, @row=1>, 
+        #<SudokuCell:0x10149e060 @guesses=[], @column=3, @row=1>, ...]
+    ?> board.show_board
+        2     5  9  4  7  3  1 
+     1  3  9  7  2     4       
+     5  7  4  1     8  9  2  6 
+     9  1     3        5  4  2 
+     7  8  2     1     6  9  3 
+     3  4  5        9     1  7 
+     8  5  3  6     1  2  7  9 
+           7     5  3  1  6  4 
+     4  6  1  9  7  2     5    
+
+    => nil
+    >> 
+    ?> solver = SudokuSolver.new(board)
+    => #<SudokuSolver:0x1017ad1c0 @board=#<SudokuBoard:0x10149e240 
+         @cells=[#<SudokuCell:0x10149e100 @guesses=[], @column=1, @row=1>, 
+         #<SudokuCell:0x10149e0d8 @guesses=[], @value=2, @column=2, @row=1>, 
+         #<SudokuCell:0x10149e060 @guesses=[], @column=3, @row=1>, 
+         #<SudokuCell:0x10149dfe8 @guesses=[], @value=5, @column=4, @row=1>, 
+         #<SudokuCell:0x10149df70 @guesses=[], @value=9, @column=5, @row=1>, ...]
+    >> solver.solve!
+     6  2  8  5  9  4  7  3  1 
+     1  3  9  7  2  6  4  8  5 
+     5  7  4  1  3  8  9  2  6 
+     9  1  6  3  8  7  5  4  2 
+     7  8  2  4  1  5  6  9  3 
+     3  4  5  2  6  9  8  1  7 
+     8  5  3  6  4  1  2  7  9 
+     2  9  7  8  5  3  1  6  4 
+     4  6  1  9  7  2  3  5  8 
+
+    => nil

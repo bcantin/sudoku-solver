@@ -9,7 +9,9 @@ class SudokuSolver
   def solve!
     @single_guess_found = true
     fill_in_single_guessed_cells
-    return 'solved' if @empty_cells.empty?
+    if @empty_cells.empty?
+      return solved_board
+    end
     'not solved'
   end
   
@@ -68,6 +70,10 @@ class SudokuSolver
   end
   
   private
+    
+    def solved_board
+      @board.show_board
+    end
     
     def get_empty_cells(cells)
       empty_cells = cells.select {|c| c if c.empty?}

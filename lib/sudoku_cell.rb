@@ -13,7 +13,7 @@ class SudokuCell
     "{:row => #{@row}, :column => #{@column}, :value => #{@value}}"
   end
   
-  # we are checking for the presencs of the value, not the cell
+  # we are checking the value, not the cell
   def present?
     !value.nil?
   end
@@ -21,4 +21,5 @@ class SudokuCell
   def empty?
     value.nil?
   end
+  
 end

@@ -11,6 +11,17 @@ class SudokuBoard
     generate_board_cells
   end
   
+  def show_board
+    Arry.each do |row|
+      get_cells_in_row(row).each do |cell|
+        val = cell.value ? cell.value : ' '
+        print " #{val} "
+      end
+      puts ''
+    end
+    puts ''
+  end
+  
   def import_from_array(imported_array)
     raise InvaidImportedArrayError unless imported_array.size == 81
     i = 0
