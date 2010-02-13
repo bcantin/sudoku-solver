@@ -1,0 +1,26 @@
+Sudoku Solver
+=============
+
+More documentation to follow as this project is finished
+
+For now, the intended use is:
+
+    board = SudokuBoard.new.import_from_array(array_of_81_values)
+    solver = SudokuSolver.new(board)
+    solver.solve!
+    
+    
+    sample board:[
+    0,2,0,5,9,4,7,3,1,
+    1,3,9,7,2,0,4,0,0,
+    5,7,4,1,0,8,9,2,6,
+    9,1,0,3,0,0,5,4,2,
+    7,8,2,0,1,0,6,9,3,
+    3,4,5,0,0,9,0,1,7,
+    8,5,3,6,0,1,2,7,9,
+    0,0,7,0,5,3,1,6,4,
+    4,6,1,9,7,2,0,5,0
+    ]
+    
+Note:  you can use either 0 or nil to represent a cell that the
+value is not known
