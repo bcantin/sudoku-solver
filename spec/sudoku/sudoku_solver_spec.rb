@@ -141,10 +141,8 @@ describe "sudoku_solver" do
       create_medium_board
     end
     
-    it "should not solve the board for now" do
-      # puts @board.show_board.inspect
-      @solver.solve!(true)
-      puts @board.show_board.inspect
+    it "should solve the board" do
+      @solver.solve!.should_not == 'not solved'
     end
   end
   
@@ -168,11 +166,9 @@ describe "sudoku_solver" do
       create_hard_board
     end
     
-    # it "should not solve the board for now" do
-    #   puts @board.show_board.inspect
-    #   @solver.solve!
-    #   puts @board.show_board.inspect
-    # end
+    it "should not solve the board for now" do
+      @solver.solve!.should_not == 'not solved'
+    end
   end
   
 end

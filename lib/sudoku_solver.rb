@@ -21,20 +21,20 @@ class SudokuSolver
   def solve_board
     until @guess_found == false
       @guess_found = false
-      @single_guess_found        = true
-      @unique_guess_in_box_found = true
+      @single_guess_found = true
+      @unique_guess       = true
 
       find_single_guessed_cells_in_a_row
       return if @empty_cells.empty?
-      find_unique_guesses_in_a_box
+      find_unique_guesses
+      return if @empty_cells.empty?
     end
   end
   
   def find_single_guessed_cells_in_a_row
     puts 'i am looking for a cell with a single value' if @verbose
     until @single_guess_found == false
-      get_all_empty_cells
-      populate_guesses_for_cells
+      setup_for_searching
       if @single_guess_found
         puts 'i found a cell with a single value!' if @verbose
         @guess_found = true
@@ -87,38 +87,72 @@ class SudokuSolver
     guesses_from_row & guesses_from_col & guesses_from_box
   end
   
-  def find_unique_guesses_in_a_box
-    puts 'i am looking for a unique value in a box' if @verbose
-    until @unique_guess_in_box_found == false
-      get_all_empty_cells
-      populate_guesses_for_cells
-      @unique_guess_in_box_found = false
-      @guess_found               = false
-      ARRY.each do |box|
-        empty_box_cells = []
-        get_empty_cells_from_box(box).each {|c| empty_box_cells += c.guesses}
-
-        box_of_cells = {}
-        ARRY.each do |num|
-          box_of_cells[num] = 0
-          empty_box_cells.each {|val| box_of_cells[num] += 1 if val == num }
-        end
-   
-        box_of_cells.each_pair do |number, count|
-          if count == 1
-            puts 'i found a unique value in a box' if @verbose
-            @unique_guess_in_box_found = true
-            @guess_found               = true
-            cell = get_empty_cells_from_box(box).select {|c| c.guesses.include?(number)}.first
-            cell.value = number
-          end
-        end
-      end
-      @unique_guess_in_box_found = false
+  def find_unique_guesses
+    until @unique_guess == false
+      break if @empty_cells.empty?
+      puts 'i am looking for a unique guess' if @verbose
+      @unique_guess = false
+      @guess_found  = false
+      find_unique_guesses_in_rows
+      break if @empty_cells.empty?
+      find_unique_guesses_in_columns
+      break if @empty_cells.empty?
+      find_unique_guesses_in_boxes
     end
   end
   
   private
+    
+    def setup_for_searching
+      get_all_empty_cells
+      populate_guesses_for_cells
+    end
+    
+    def find_unique_guesses_in_rows
+      puts 'i am looking for a unique guess amoung the rows' if @verbose
+      setup_for_searching
+      ARRY.each do |row|
+        find_unique_guess(get_empty_cells_from_row(row))
+      end
+    end
+    
+    def find_unique_guesses_in_columns
+      puts 'i am looking for a unique guess amoung the columns' if @verbose
+      setup_for_searching
+      ARRY.each do |col|
+        find_unique_guess(get_empty_cells_from_column(col))
+      end
+    end
+    
+    def find_unique_guesses_in_boxes
+      puts 'i am looking for a unique guess in the boxes' if @verbose
+      setup_for_searching
+      ARRY.each do |box|
+        find_unique_guess(get_empty_cells_from_box(box))
+      end
+    end
+    
+    def find_unique_guess(empty_cells)
+      guessed_values = []
+      empty_cells.each {|c| guessed_values += c.guesses}
+
+      cells = {}
+      ARRY.each do |num|
+        cells[num] = 0
+        guessed_values.each {|val| cells[num] += 1 if val == num }
+      end
+ 
+      cells.each_pair do |number, count|
+        if count == 1
+          @unique_guess = true
+          @guess_found  = true
+          cell = empty_cells.select {|c| c.guesses.include?(number)}.first
+          puts "i found a unique guess of #{number} in cell #{cell.row}, #{cell.column}" if @verbose
+          cell.value = number
+        end
+      end
+    end
+    
     
     def solved_board
       @board.show_board
