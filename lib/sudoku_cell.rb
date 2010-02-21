@@ -10,7 +10,7 @@ class SudokuCell
   end
   
   def to_s
-    "{:row => #{@row}, :column => #{@column}, :value => #{@value}}"
+    "{:row => #{@row}, :column => #{@column}, :value => #{@value}, :guesses => #{@guesses}}"
   end
   
   # we are checking the value, not the cell
@@ -20,6 +20,11 @@ class SudokuCell
   
   def empty?
     value.nil?
+  end
+  
+  def value=(val)
+    @guesses = []
+    @value   = val
   end
   
 end

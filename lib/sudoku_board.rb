@@ -4,7 +4,7 @@ class SudokuBoard
   
   attr_accessor :cells
   
-  Arry = [1,2,3,4,5,6,7,8,9]
+  ARRY = [1,2,3,4,5,6,7,8,9]
   
   def initialize
     @cells = []
@@ -12,28 +12,30 @@ class SudokuBoard
   end
   
   def show_board
-    Arry.each do |row|
+    a = []
+    ARRY.each do |row|
+      r = []
       get_cells_in_row(row).each do |cell|
-        val = cell.value ? cell.value : ' '
-        print " #{val} "
+        val = cell.value ? cell.value : 0
+        r << val.to_s
       end
-      puts ''
+      a << r
     end
-    puts ''
+    a
   end
   
   def import_from_array(imported_array)
     raise InvaidImportedArrayError unless imported_array.size == 81
     i = 0
     @cells.each do |c|
-      set_cell(c, imported_array[i]) if Arry.include?(imported_array[i])
+      set_cell(c, imported_array[i]) if ARRY.include?(imported_array[i])
       i += 1
     end
   end
   
   def generate_board_cells
-    Arry.each do |row|
-      Arry.each do |col|
+    ARRY.each do |row|
+      ARRY.each do |col|
         @cells << SudokuCell.new(row, col)
       end
     end
@@ -130,8 +132,8 @@ class SudokuBoard
   
   private
      def nine_valid_cells?(cells)
-       arry = cells.select {|c| c.value if c.present?}
-       return true if arry.size == 9 && !arry.uniq!
+       a = cells.select {|c| c.value if c.present?}
+       return true if a.size == 9 && !a.uniq!
        false
      end
     
