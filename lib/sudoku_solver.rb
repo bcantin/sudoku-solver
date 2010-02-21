@@ -11,43 +11,36 @@ class SudokuSolver
     puts 'i am trying to solve the board' if @verbose
     @guess_found = true
     solve_board
-    if @empty_cells.empty?
-      return solved_board
-    end
+    
     puts 'i am done!' if @verbose
+    return solved_board if @empty_cells.empty?
     'not solved'
   end
   
   def solve_board
     until @guess_found == false
       @guess_found = false
-      @single_guess_found = true
-      @unique_guess       = true
-
-      find_single_guessed_cells_in_a_row
-      return if @empty_cells.empty?
+      find_single_guessed_cells
       find_unique_guesses
-      return if @empty_cells.empty?
     end
   end
   
-  def find_single_guessed_cells_in_a_row
+  def find_single_guessed_cells
+    @single_guess_found = true
     puts 'i am looking for a cell with a single value' if @verbose
     until @single_guess_found == false
       setup_for_searching
-      if @single_guess_found
-        puts 'i found a cell with a single value!' if @verbose
-        @guess_found = true
-        collect_and_set_single_guesses
-      end
+      collect_and_set_single_guesses
     end
-    
-    @single_guess_found = false
   end
   
   def collect_and_set_single_guesses
+    @single_guess_found = false
     singles = @empty_cells.select {|c| c.guesses.size == 1}
     singles.each do |c|
+      @guess_found        = true
+      @single_guess_found = true
+      puts "i found a unique guess of #{c.guesses.first} in cell #{c.row}, #{c.column}" if @verbose
       c.value = c.guesses.first
     end
   end
@@ -88,15 +81,13 @@ class SudokuSolver
   end
   
   def find_unique_guesses
+    @unique_guess = true
     until @unique_guess == false
-      break if @empty_cells.empty?
       puts 'i am looking for a unique guess' if @verbose
       @unique_guess = false
-      @guess_found  = false
+      # @guess_found = false
       find_unique_guesses_in_rows
-      break if @empty_cells.empty?
       find_unique_guesses_in_columns
-      break if @empty_cells.empty?
       find_unique_guesses_in_boxes
     end
   end

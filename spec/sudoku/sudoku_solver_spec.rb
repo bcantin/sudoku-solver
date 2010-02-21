@@ -31,15 +31,7 @@ describe "sudoku_solver" do
     @cell8 = @board.get_cell(9,8)
     @cell9 = @board.get_cell(9,9)
   end
-  # _ 6 _  1 _ 4  _ 5 _ 
-  # _ _ 8  3 _ 5  6 _ _ 
-  # 2 _ _  _ _ _  _ _ 1 
-  # 8 _ _  4 _ 7  _ _ 6 
-  # _ _ 6  _ _ _  3 _ _ 
-  # 7 _ _  9 _ 1  _ _ 4 
-  # 5 _ _  _ _ _  _ _ 2 
-  # _ _ 7  2 _ 6  9 _ _ 
-  # _ 4 _  5 _ 8  _ 7 _
+
   def create_partially_full_board
     @board.import_from_array([
       nil,  6,nil,  1,nil,  4,nil,  5,nil,
@@ -102,11 +94,7 @@ describe "sudoku_solver" do
       @solver.get_all_empty_cells.count.should == 20
     end
     
-    it "should be able to solve the simple board" do
-      @solver.solve!.should_not == 'not solved'
-    end
-    
-    it "should solve the board" do
+    it "should solve the easy board" do
       @solver.solve!
       @board.show_board.should == [
         %w[6 2 8 5 9 4 7 3 1],
@@ -141,7 +129,7 @@ describe "sudoku_solver" do
       create_medium_board
     end
     
-    it "should solve the board" do
+    it "should solve the medium board" do
       @solver.solve!.should_not == 'not solved'
     end
   end
@@ -159,15 +147,42 @@ describe "sudoku_solver" do
         1, 0, 0, 0, 0, 0, 0, 7, 0,
         7, 0, 0, 0, 0, 8, 1, 6, 4
       ])
-            
     end
     
     before(:each) do
       create_hard_board
     end
     
-    it "should not solve the board for now" do
+    it "should solve the hard board" do
       @solver.solve!.should_not == 'not solved'
+    end
+  end
+  
+  describe "evil board" do
+    def create_evil_board
+      @board.import_from_array([
+        0,0,0,0,8,0,5,0,9,
+        0,0,0,7,0,0,0,0,0,
+        0,2,0,0,4,3,0,6,0,
+        0,0,3,0,6,0,2,0,0,
+        6,0,8,0,0,0,9,0,3,
+        0,0,9,0,3,0,4,0,0,
+        0,9,0,8,5,0,0,7,0,
+        0,0,0,0,0,4,0,0,0,
+        7,0,6,0,2,0,0,0,0
+      ])
+    end
+    
+    before(:each) do
+      create_evil_board
+    end
+    
+    it "should fail to solve the evil board" do
+      @solver.solve!(true).should == 'not solved'
+      cells = @board.cells
+      i = 0
+      cells.each {|c| puts c; puts ''; i += 1 if c.empty?}
+      puts "UNSOLVED #{i}"
     end
   end
   
