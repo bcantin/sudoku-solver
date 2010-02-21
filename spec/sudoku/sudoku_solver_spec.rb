@@ -124,6 +124,33 @@ describe "sudoku_solver" do
   describe "medium board" do
     def create_medium_board
       @board.import_from_array([
+        0,0,5,0,0,9,4,0,0,
+        0,0,8,0,6,0,0,1,0,
+        9,0,7,0,0,0,5,6,2,
+        0,2,1,9,0,0,0,0,6,
+        0,9,0,0,0,0,0,7,0,
+        3,0,0,0,0,2,8,5,0,
+        1,4,2,0,0,0,6,0,5,
+        0,5,0,0,2,0,7,0,0,
+        0,0,9,4,0,0,1,0,0
+      ])
+            
+    end
+    
+    before(:each) do
+      create_medium_board
+    end
+    
+    it "should not solve the board for now" do
+      # puts @board.show_board.inspect
+      @solver.solve!(true)
+      puts @board.show_board.inspect
+    end
+  end
+  
+  describe "hard board" do
+    def create_hard_board
+      @board.import_from_array([
         8, 0, 7, 9, 0, 0, 0, 0, 0,
         6, 0, 0, 0, 0, 0, 0, 0, 0,
         3, 2, 1, 4, 6, 5, 0, 9, 0,
@@ -138,13 +165,14 @@ describe "sudoku_solver" do
     end
     
     before(:each) do
-      create_medium_board
+      create_hard_board
     end
     
-    it "should not solve the board for now" do
-      puts @board.show_board.inspect
-      @solver.solve!
-      puts @board.show_board.inspect
-    end
+    # it "should not solve the board for now" do
+    #   puts @board.show_board.inspect
+    #   @solver.solve!
+    #   puts @board.show_board.inspect
+    # end
   end
+  
 end
