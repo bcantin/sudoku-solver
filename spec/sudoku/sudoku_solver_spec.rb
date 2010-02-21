@@ -178,12 +178,21 @@ describe "sudoku_solver" do
     end
     
     it "should fail to solve the evil board" do
+      empty_cell_count
       @solver.solve!(true).should == 'not solved'
-      cells = @board.cells
-      i = 0
-      cells.each {|c| puts c; puts ''; i += 1 if c.empty?}
-      puts "UNSOLVED #{i}"
+      empty_cell_count
+      
+      # cells = @board.cells
+      # i = 0
+      # cells.each {|c| puts c; puts ''; i += 1 if c.empty?}
+      # puts "UNSOLVED #{i}"
     end
+  end
+  
+  def empty_cell_count
+    i = 0
+    @board.cells.each {|c| i+=1 if c.empty?}
+    puts "UNSOLVED #{i}"
   end
   
 end
